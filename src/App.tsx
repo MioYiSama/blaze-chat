@@ -1,8 +1,8 @@
-import { redirect, Route, Router, useNavigate } from "@solidjs/router";
-import RootLayout from "./routes/RootLayout";
-import ChatPage from "./routes/ChatPage";
-import SettingsPage from "./routes/SettingsPage";
+import { Route, Router } from "@solidjs/router";
 import Redirect from "./components/Redirect";
+import ChatPage from "./routes/ChatPage";
+import RootLayout from "./routes/RootLayout";
+import SettingsPage from "./routes/SettingsPage";
 
 export default function App() {
   return (

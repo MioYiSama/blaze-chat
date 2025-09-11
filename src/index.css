@@ -1,1 +1,8 @@
 @import "tailwindcss";
+
+body {
+  @variant dark {
+    @apply text-white;
+    @apply bg-black;
+  }
+}
