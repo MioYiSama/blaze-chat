@@ -1,14 +1,88 @@
 import type { RouteSectionProps } from "@solidjs/router";
 import { Plus } from "lucide-solid";
-import { For } from "solid-js";
+import OpenAI from "openai";
+import { createSignal, For, onMount } from "solid-js";
+import Split from "split.js";
 import { getAssistants } from "../lib/storage";
+import "./splitter.css";
+
+// function Splitter(props: { onMove(delta: number): void }) {
+//   const [dragging, setDragging] = createSignal(false);
+//   const [startX, setStartX] = createSignal(0);
+
+//   function onMouseDown(e: MouseEvent) {
+//     setDragging(true);
+//     setStartX(e.clientX);
+//   }
+
+//   function onMouseUp() {
+//     setDragging(false);
+//   }
+
+//   function onMouseMove(e: MouseEvent) {
+//     if (!dragging()) {
+//       return;
+//     }
+
+//     props.onMove(e.clientX - startX());
+//     setStartX(e.clientX);
+//   }
+
+//   return (
+//     <div
+//       class="w-0.5 cursor-col-resize bg-gray-200 dark:bg-gray-800"
+//       onMouseDown={onMouseDown}
+//       onMouseUp={onMouseUp}
+//       onMouseMove={onMouseMove}
+//     />
+//   );
+// }
 
 export default function ChatPage(props: RouteSectionProps) {
   const id = props.location.query["assistant"] ?? 0;
+  let textarea: HTMLTextAreaElement | undefined;
+
+  const [res, setRes] = createSignal("");
+
+  onMount(() => {
+    Split(["#left", "#right"], {
+      sizes: [100 / 3, 200 / 3],
+    });
+  });
+
+  async function onClick() {
+    if (!textarea) {
+      return;
+    }
+
+    const message = textarea.value;
+
+    const client = new OpenAI({
+      baseURL: localStorage.getItem("BASE_URL")!,
+      apiKey: localStorage.getItem("API_KEY")!,
+      dangerouslyAllowBrowser: true,
+    });
+    setRes("");
+    const response = await client.responses.create({
+      model: "gpt-4.1-nano",
+      input: message,
+      stream: true,
+    });
+
+    for await (const element of response) {
+      if (element.type == "response.output_text.delta") {
+        setRes(res() + element.delta);
+      }
+    }
+  }
 
   return (
-    <div class="flex size-full flex-row divide-x">
-      <ul class="flex h-full grow flex-col items-center gap-4 p-4">
+    <div class="flex size-full flex-row">
+      <ul
+        id="left"
+        class="flex h-full grow flex-col items-center gap-4 p-4 md:w-40 md:grow-0"
+      >
+        <h1 class="text-3xl font-black">Blaze Chat</h1>
         <For each={getAssistants()}>
           {(assistant) => (
             <a href={`?assistant=${assistant.id}`}>{assistant.name}</a>
@@ -22,9 +96,21 @@ export default function ChatPage(props: RouteSectionProps) {
           添加…
         </button>
       </ul>
-      <section class="hidden h-full grow flex-col md:flex">
-        <p>{JSON.stringify(props.location.query)}</p>
-        <textarea>输入框</textarea>
+      {/* <Splitter onMove={(delta)=>} /> */}
+      <section id="right" class="hidden h-full flex-col md:flex md:grow">
+        <p class="grow">{res()}</p>
+        <div class="m-4 flex flex-col items-center rounded border">
+          <textarea
+            ref={textarea}
+            class="h-32 w-full resize-none p-2 focus:outline-none"
+          ></textarea>
+          <button
+            onClick={onClick}
+            class="m-4 cursor-pointer self-end rounded border px-4 py-2 hover:bg-gray-800"
+          >
+            发送
+          </button>
+        </div>
       </section>
     </div>
   );

@@ -1,7 +1,7 @@
 import { useLocation, type RouteSectionProps } from "@solidjs/router";
 import clsx from "clsx";
 
-import { MessageCircle, Settings } from "lucide-solid";
+import { Flame, MessageCircle, Settings } from "lucide-solid";
 import type { JSXElement } from "solid-js";
 
 function NavItem(props: {
@@ -30,6 +30,7 @@ export default function RootLayout(props: RouteSectionProps) {
       <main class="grow">{props.children}</main>
 
       <nav class="flex w-full shrink flex-row items-center justify-evenly gap-4 p-2 md:h-full md:w-auto md:flex-col md:justify-start">
+        <Flame size="2rem" class="my-2 hidden md:block" />
         <NavItem path="/chat" name="聊天" icon={() => <MessageCircle />} />
         <NavItem path="/settings" name="设置" icon={() => <Settings />} />
       </nav>

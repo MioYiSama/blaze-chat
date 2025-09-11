@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+.gutter {
+  @apply bg-gray-200;
+  @variant dark {
+    @apply bg-gray-800;
+  }
+
+  @apply w-0.5!;
+
+  @apply cursor-col-resize;
+
+  @apply hidden;
+
+  @variant md {
+    @apply block;
+  }
+}
