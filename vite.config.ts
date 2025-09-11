@@ -11,12 +11,6 @@ export default defineConfig({
       treeshake: "smallest",
     },
     terserOptions: {
-      compress: {
-        passes: 3,
-      },
-      mangle: {
-        toplevel: true,
-      },
       format: {
         comments: false,
       },
