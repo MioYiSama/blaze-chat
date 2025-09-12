@@ -1,44 +1,17 @@
-import type { RouteSectionProps } from "@solidjs/router";
-import { Plus } from "lucide-solid";
-import OpenAI from "openai";
+import { useNavigate, type RouteSectionProps } from "@solidjs/router";
+import { Bot, Plus, User } from "lucide-solid";
 import { createSignal, For, onMount } from "solid-js";
 import Split from "split.js";
 import { getAssistants } from "../lib/storage";
 import "./splitter.css";
 
-// function Splitter(props: { onMove(delta: number): void }) {
-//   const [dragging, setDragging] = createSignal(false);
-//   const [startX, setStartX] = createSignal(0);
-
-//   function onMouseDown(e: MouseEvent) {
-//     setDragging(true);
-//     setStartX(e.clientX);
-//   }
-
-//   function onMouseUp() {
-//     setDragging(false);
-//   }
-
-//   function onMouseMove(e: MouseEvent) {
-//     if (!dragging()) {
-//       return;
-//     }
-
-//     props.onMove(e.clientX - startX());
-//     setStartX(e.clientX);
-//   }
-
-//   return (
-//     <div
-//       class="w-0.5 cursor-col-resize bg-gray-200 dark:bg-gray-800"
-//       onMouseDown={onMouseDown}
-//       onMouseUp={onMouseUp}
-//       onMouseMove={onMouseMove}
-//     />
-//   );
-// }
-
 export default function ChatPage(props: RouteSectionProps) {
+  const navigate = useNavigate();
+
+  if (!props.location.query["assistant"]) {
+    navigate("?assistant=0");
+  }
+
   const id = props.location.query["assistant"] ?? 0;
   let textarea: HTMLTextAreaElement | undefined;
 
@@ -57,7 +30,7 @@ export default function ChatPage(props: RouteSectionProps) {
 
     const message = textarea.value;
 
-    const client = new OpenAI({
+    const client = new (await import("openai")).OpenAI({
       baseURL: localStorage.getItem("BASE_URL")!,
       apiKey: localStorage.getItem("API_KEY")!,
       dangerouslyAllowBrowser: true,
@@ -80,7 +53,7 @@ export default function ChatPage(props: RouteSectionProps) {
     <div class="flex size-full flex-row">
       <ul
         id="left"
-        class="flex h-full grow flex-col items-center gap-4 p-4 md:w-40 md:grow-0"
+        class="desktop:w-40 desktop:grow-0 flex h-full grow flex-col items-center gap-4 p-4"
       >
         <h1 class="text-3xl font-black">Blaze Chat</h1>
         <For each={getAssistants()}>
@@ -88,26 +61,55 @@ export default function ChatPage(props: RouteSectionProps) {
             <a href={`?assistant=${assistant.id}`}>{assistant.name}</a>
           )}
         </For>
-        <button
-          class="flex cursor-pointer flex-row items-center gap-2 rounded border-2 p-4"
-          onClick={() => {}}
-        >
+        <button class="btn flex flex-row items-center gap-2" onClick={() => {}}>
           <Plus class="text-sm" />
           添加…
         </button>
       </ul>
-      {/* <Splitter onMove={(delta)=>} /> */}
-      <section id="right" class="hidden h-full flex-col md:flex md:grow">
-        <p class="grow">{res()}</p>
+      <section
+        id="right"
+        class="desktop:flex desktop:grow hidden h-full flex-col p-4"
+      >
+        <ul class="m-4 flex grow flex-col gap-4">
+          <li class="flex flex-row self-end">
+            你好！
+            <User />
+          </li>
+          <li class="flex flex-row">
+            <Bot />
+            你好！
+          </li>
+          <li class="flex flex-row self-end">
+            你好！
+            <User />
+          </li>
+          <li class="flex flex-row">
+            <Bot />
+            你好！
+          </li>
+          <li class="flex flex-row self-end">
+            你好！
+            <User />
+          </li>
+          <li class="flex flex-row">
+            <Bot />
+            你好！
+          </li>
+          <li class="flex flex-row self-end">
+            你好！
+            <User />
+          </li>
+          <li class="flex flex-row">
+            <Bot />
+            你好！
+          </li>
+        </ul>
         <div class="m-4 flex flex-col items-center rounded border">
           <textarea
             ref={textarea}
             class="h-32 w-full resize-none p-2 focus:outline-none"
           ></textarea>
-          <button
-            onClick={onClick}
-            class="m-4 cursor-pointer self-end rounded border px-4 py-2 hover:bg-gray-800"
-          >
+          <button onClick={onClick} class="btn m-4 self-end">
             发送
           </button>
         </div>
