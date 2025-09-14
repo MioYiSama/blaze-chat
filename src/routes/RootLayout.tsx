@@ -15,7 +15,7 @@ function NavItem(props: {
     <a
       href={props.path}
       class={clsx("flex flex-col items-center justify-center rounded-md p-2", {
-        "bg-gray-200 dark:bg-gray-800": location.pathname === props.path,
+        "bg-secondary-bg": location.pathname === props.path,
       })}
     >
       {props.icon()}
@@ -26,12 +26,18 @@ function NavItem(props: {
 
 export default function RootLayout(props: RouteSectionProps) {
   return (
-    <div class="desktop:flex-row-reverse desktop:divide-x desktop:divide-y-0 desktop:divide-x-reverse flex h-dvh w-dvw flex-col divide-y divide-gray-300 overflow-hidden dark:divide-gray-700">
+    <div class="divide-secondary-bg flex h-dvh w-dvw flex-col divide-y overflow-hidden sm:flex-row-reverse sm:divide-x sm:divide-y-0 sm:divide-x-reverse">
       <main class="grow">{props.children}</main>
 
-      <nav class="desktop:h-full desktop:w-auto desktop:flex-col desktop:justify-start flex w-full shrink flex-row items-center justify-evenly gap-4 p-2">
-        <Flame size="2rem" class="desktop:block my-2 hidden" />
-        <NavItem path="/chat" name="聊天" icon={() => <MessageCircle />} />
+      <nav
+        class={clsx(
+          "flex flex-row sm:flex-col",
+          "items-center justify-evenly sm:justify-start",
+          "w-full gap-4 p-2 sm:h-full sm:w-auto",
+        )}
+      >
+        <Flame size="2rem" class="my-2 max-sm:hidden" />
+        <NavItem path="/" name="聊天" icon={() => <MessageCircle />} />
         <NavItem path="/settings" name="设置" icon={() => <Settings />} />
       </nav>
     </div>

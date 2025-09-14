@@ -8,14 +8,14 @@ interface MyDB extends DBSchema {
 }
 
 export interface Assistant {
-  id: number;
+  id?: number;
   name: string;
 }
 
 const defaultAssistant: Assistant = {
-  id: 0,
   name: "默认助手",
 };
+
 async function f() {
   const db = await openDB<MyDB>("my-db");
   db.add("assistants", {}, "1");

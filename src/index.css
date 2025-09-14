@@ -1,36 +1,38 @@
 @import "tailwindcss";
 
+:root {
+  --primary-color: var(--color-black);
+  --secondary-color: var(--color-gray-800);
+  --primary-bg-color: var(--color-white);
+  --secondary-bg-color: var(--color-gray-200);
+}
+
+@variant dark {
+  :root {
+    --primary-color: var(--color-white);
+    --secondary-color: var(--color-gray-200);
+    --primary-bg-color: var(--color-black);
+    --secondary-bg-color: var(--color-gray-800);
+  }
+}
+
 @theme {
-  --color-primary: var(--color-black);
-  --color-secondary: var(--color-gray-800);
-  --color-bg-primary: var(--color-white);
-  --color-bg-secondary: var(--color-gray-200);
+  --color-primary: var(--primary-color);
+  --color-secondary: var(--secondary-color);
+  --color-primary-bg: var(--primary-bg-color);
+  --color-secondary-bg: var(--secondary-bg-color);
 
-  --color-dark-primary: var(--color-white);
-  --color-dark-secondary: var(--color-gray-200);
-  --color-dark-bg-primary: var(--color-black);
-  --color-dark-bg-secondary: var(--color-gray-800);
-
-  --breakpoint-desktop: 48rem;
+  --breakpoint-sm: 48rem;
 }
 
 #root {
   @apply text-primary;
-  @apply bg-bg-primary;
-
-  @variant dark {
-    @apply text-dark-primary;
-    @apply bg-dark-bg-primary;
-  }
+  @apply bg-primary-bg;
 }
 
 @utility btn {
   @apply cursor-pointer rounded border px-4 py-2;
-  @apply border-primary;
-  @apply hover:bg-bg-secondary;
 
-  @variant dark {
-    @apply border-dark-secondary;
-    @apply hover:bg-dark-bg-secondary;
-  }
+  @apply border-primary;
+  @apply hover:bg-secondary-bg;
 }
