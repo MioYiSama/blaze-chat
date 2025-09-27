@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+:root {
+  --primary-color: var(--color-blue-200);
+  --foreground-color: var(--color-black);
+  --background-color: var(--color-white);
+
+  @variant dark {
+    --primary-color: var(--color-blue-900);
+    --foreground-color: var(--color-white);
+    --background-color: var(--color-black);
+  }
+}
+
+@theme {
+  --color-primary: var(--primary-color);
+  --color-secondary: --alpha(var(--primary-color) / 30%);
+  --color-foreground: var(--foreground-color);
+  --color-background: var(--background-color);
+
+  /* --breakpoint-sm: 48rem; */
+}
+
+html,
+body,
+#root {
+  @apply h-[100dvh] w-[100dvw];
+  @apply fixed touch-none overflow-hidden;
+  @apply select-none;
+}
+
+#root {
+  @apply flex flex-col sm:flex-row;
+  @apply text-foreground bg-background not-sm:text-sm;
+  @apply divide-primary divide-y sm:divide-x sm:divide-y-0 sm:divide-x-reverse;
+}
+
+h2 {
+  @apply text-2xl font-bold;
+}
+
+button {
+  @apply cursor-pointer;
+}
