@@ -1,5 +1,6 @@
 import { AddIcon } from "@/components/icons";
 import { addAssistant, type Assistant, getAssistants } from "@/lib/db";
+import { A } from "@solidjs/router";
 import { createResource, createSelector, For } from "solid-js";
 
 export default function AssistantList(props: {
@@ -59,7 +60,7 @@ function AssistantItem(props: {
 }) {
   return (
     <li>
-      <a
+      <A
         href={`?assistant=${props.assistant.id}`}
         onClick={props.onClick}
         class="border-secondary hover-color block overflow-hidden rounded-lg border py-4 text-center overflow-ellipsis"
@@ -68,7 +69,7 @@ function AssistantItem(props: {
         }}
       >
         {props.assistant.name}
-      </a>
+      </A>
     </li>
   );
 }

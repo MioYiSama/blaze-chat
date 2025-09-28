@@ -4,7 +4,7 @@ import AssistantList from "./AssistantList";
 import ChatPanel from "./ChatPanel";
 
 export default function ChatPage(props: RouteSectionProps) {
-  const [showSidebar, setShowSidebar] = createSignal(false);
+  const [showSidebar, setShowSidebar] = createSignal(true);
 
   const assistantId = createMemo(() => {
     let param = props.location.query["assistant"];

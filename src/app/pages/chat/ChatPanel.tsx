@@ -26,14 +26,12 @@ export default function ChatPanel(props: {
           <BackIcon />
         </button>
         <h2 class="overflow-hidden overflow-ellipsis">{assistant()?.name}</h2>
-        <button class="sm:invisible">
+        <button>
           <SettingsIcon />
         </button>
       </div>
 
-      <div class="grow">
-        <p>Message</p>
-      </div>
+      <div class="grow"></div>
 
       <div class="flex h-1/5 flex-col p-2">
         <textarea
