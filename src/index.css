@@ -14,31 +14,46 @@
 
 @theme {
   --color-primary: var(--primary-color);
-  --color-secondary: --alpha(var(--primary-color) / 30%);
+  --color-secondary: --alpha(var(--primary-color) / 50%);
   --color-foreground: var(--foreground-color);
   --color-background: var(--background-color);
 
   /* --breakpoint-sm: 48rem; */
 }
 
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-bold;
+  }
+
+  button {
+    @apply cursor-pointer;
+  }
+}
+
 html,
-body,
-#root {
+body {
   @apply h-[100dvh] w-[100dvw];
   @apply fixed touch-none overflow-hidden;
   @apply select-none;
 }
 
+* {
+  @apply divide-primary;
+}
+
 #root {
+  @apply size-full;
   @apply flex flex-col sm:flex-row;
   @apply text-foreground bg-background not-sm:text-sm;
   @apply divide-primary divide-y sm:divide-x sm:divide-y-0 sm:divide-x-reverse;
 }
 
-h2 {
-  @apply text-2xl font-bold;
-}
-
-button {
-  @apply cursor-pointer;
+@utility hover-color {
+  @apply hover:bg-secondary active:bg-primary transition-colors;
 }

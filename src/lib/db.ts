@@ -1,6 +1,6 @@
 import { openDB, type DBSchema } from "idb";
 
-type Assistant = {
+export type Assistant = {
   id?: number;
   name: string;
 };
