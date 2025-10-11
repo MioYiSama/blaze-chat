@@ -30,7 +30,7 @@ export default function AssistantList(props: {
     >
       <h2 class="text-2xl">助手列表</h2>
 
-      <ul class="flex h-full w-full flex-col gap-4 overflow-y-scroll">
+      <ul class="flex h-full w-full flex-col gap-4 overflow-y-scroll overscroll-none">
         <For each={assistants()}>
           {(assistant) => (
             <AssistantItem

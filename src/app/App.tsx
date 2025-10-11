@@ -1,17 +1,13 @@
+import ChatPage from "@/app/pages/chat/ChatPage";
+import SettingsPage from "@/app/pages/settings/SettingsPage";
 import { Route, Router } from "@solidjs/router";
-import { lazy } from "solid-js";
+import Root from "./pages/Root";
 
 export default function App() {
   return (
-    <Router root={lazy(() => import("@/app/pages/Root"))}>
-      <Route
-        path="/"
-        component={lazy(() => import("@/app/pages/chat/ChatPage"))}
-      />
-      <Route
-        path="/settings"
-        component={lazy(() => import("@/app/pages/settings/SettingsPage"))}
-      />
+    <Router root={Root}>
+      <Route path="/" component={ChatPage} />
+      <Route path="/settings" component={SettingsPage} />
     </Router>
   );
 }
