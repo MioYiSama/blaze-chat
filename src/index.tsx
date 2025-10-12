@@ -1,4 +1,3 @@
-import "solid-devtools";
 import { render } from "solid-js/web";
 import App from "./app/App";
 
