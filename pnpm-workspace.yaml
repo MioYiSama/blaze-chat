@@ -1,0 +1,8 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+
+catalog:
+  svelte: ^5.46.4
+  tailwindcss: ^4.1.18
+  "@tailwindcss/typography": ^0.5.19

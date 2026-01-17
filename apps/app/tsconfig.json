@@ -1,0 +1,5 @@
+{
+  "extends": ["./.svelte-kit/tsconfig.json", "../../tsconfig.json"],
+  "include": ["*.config.ts", "src/**/*"],
+  "exclude": ["node_modules", "dist", ".svelte-kit"]
+}
