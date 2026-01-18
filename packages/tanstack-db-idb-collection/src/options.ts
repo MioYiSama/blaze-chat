@@ -6,38 +6,29 @@ import type {
   SyncConfig,
   UpdateMutationFn,
 } from "@tanstack/db";
+import type { IDBPDatabase } from "idb";
 import type { Database } from "./database";
-import type {
-  ObjectStore,
-  ObjectStoreEntity,
-  ObjectStoreId,
-  ObjectStores,
-} from "./types";
+import type { ObjectStore, ObjectStoreEntity, ObjectStoreIdType, ObjectStores } from "./types";
 
-class IDBCollectionConfig<
-  const T extends ObjectStores,
-  Name extends keyof T & string,
-  Entity extends ObjectStoreEntity<T[Name]>,
-  IdType extends ObjectStoreId<T[Name]>,
+export class IDBCollectionConfig<
+  const Store extends ObjectStore,
+  const Entity extends ObjectStoreEntity<Store>,
+  const IdType extends ObjectStoreIdType<Store>,
 > {
   id: string;
   schema: StandardSchemaV1<Entity>;
   getKey: (entity: Entity) => IdType;
-  sync: SyncConfig<Entity>;
+  sync: SyncConfig<Entity, IdType>;
 
   onInsert: InsertMutationFn<Entity, IdType>;
   onUpdate: UpdateMutationFn<Entity, IdType>;
   onDelete: DeleteMutationFn<Entity, IdType>;
 
   private begin!: () => void;
-  private write!: (
-    message: ChangeMessageOrDeleteKeyMessage<Entity, IdType>,
-  ) => void;
+  private write!: (message: ChangeMessageOrDeleteKeyMessage<Entity, IdType>) => void;
   private commit!: () => void;
 
-  constructor({ idb, objectStores }: Database<T>, name: Name) {
-    const { schema, idPath } = objectStores[name]! as ObjectStore<Entity>;
-
+  constructor(idb: Promise<IDBPDatabase>, name: string, { idPath, schema }: Store) {
     this.id = name;
     this.schema = schema;
     this.getKey = (entity) => entity[idPath];
@@ -47,6 +38,7 @@ class IDBCollectionConfig<
         this.write = write;
         this.commit = commit;
 
+        // oxlint-disable-next-line typescript/no-floating-promises
         (async () => {
           try {
             begin();
@@ -96,7 +88,7 @@ class IDBCollectionConfig<
     };
 
     this.onDelete = async ({ transaction }) => {
-      const keys = transaction.mutations.map((m) => m.key as IdType);
+      const keys = transaction.mutations.map((m) => m.key);
 
       const tx = (await idb).transaction(name, "readwrite");
 
@@ -115,7 +107,7 @@ class IDBCollectionConfig<
 
 export function idbCollectionOptions<
   const T extends ObjectStores,
-  Name extends keyof T & string,
->({ database, name }: { database: Database<T>; name: Name }) {
-  return new IDBCollectionConfig(database, name);
+  const Name extends keyof T & string,
+>({ database: { idb, objectStores }, name }: { database: Database<T>; name: Name }) {
+  return new IDBCollectionConfig(idb, name, objectStores[name]!);
 }

@@ -38,11 +38,13 @@
   "devDependencies": {
     "@sveltejs/package": "^2.5.7",
     "shiki-codegen": "^3.21.0",
-    "svelte": "catalog:"
+    "svelte": "catalog:",
+    "unplugin-icons": "catalog:"
   },
   "peerDependencies": {
     "@tailwindcss/typography": "catalog:",
     "svelte": "catalog:",
-    "tailwindcss": "catalog:"
+    "tailwindcss": "catalog:",
+    "unplugin-icons": "catalog:"
   }
 }

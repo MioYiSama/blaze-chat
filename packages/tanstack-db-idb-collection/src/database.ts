@@ -1,12 +1,13 @@
 import { openDB, type IDBPDatabase } from "idb";
-import type { ObjectStore, ObjectStores } from "./types";
+import type { ObjectStore, ObjectStores, ValidIdPath } from "./types";
 
 /**
  * Helper function for IDE auto completion
  */
-export function defineObjectStore<Entity extends object>(
-  objectStore: ObjectStore<Entity>,
-): ObjectStore<Entity> {
+export function defineObjectStore<
+  const Entity extends object,
+  const IdPath extends ValidIdPath<Entity>,
+>(objectStore: ObjectStore<Entity, IdPath>): ObjectStore<Entity, IdPath> {
   return objectStore;
 }
 
@@ -25,16 +26,12 @@ export function createDatabase<const T extends ObjectStores>(
 ): Database<T> {
   const idb = openDB(name, version, {
     async upgrade(database) {
-      for (const [key, { idPath: keyPath, indicies }] of Object.entries(
-        objectStores,
-      )) {
+      for (const [key, { idPath: keyPath, indicies }] of Object.entries(objectStores)) {
         const objectStore = database.createObjectStore(key, { keyPath });
 
         if (indicies) {
           // oxlint-disable-next-line no-await-in-loop
-          await Promise.all(
-            indicies.map((index) => objectStore.createIndex(name, index)),
-          );
+          await Promise.all(indicies.map((index) => objectStore.createIndex(name, index)));
         }
       }
     },

@@ -40,6 +40,6 @@
 
 - TypeScript
 - Bun (Package Manager)
-- Vite & Terser
+- Vite & Tsdown & Terser
 - Oxlint
 - Prettier (will switch to Oxfmt in the future)

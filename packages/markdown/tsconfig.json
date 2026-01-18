@@ -4,6 +4,7 @@
   "exclude": ["node_modules", "dist", ".svelte-kit"],
   "compilerOptions": {
     "declaration": true,
-    "declarationMap": true
+    "declarationMap": true,
+    "types": ["unplugin-icons/types/svelte"]
   }
 }
