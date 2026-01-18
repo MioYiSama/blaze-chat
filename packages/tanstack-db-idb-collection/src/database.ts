@@ -31,7 +31,7 @@ export function createDatabase<const T extends ObjectStores>(
 
         if (indicies) {
           // oxlint-disable-next-line no-await-in-loop
-          await Promise.all(indicies.map((index) => objectStore.createIndex(name, index)));
+          await Promise.all(indicies.map((index) => objectStore.createIndex(index, index)));
         }
       }
     },
