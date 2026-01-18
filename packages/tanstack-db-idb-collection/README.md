@@ -1,6 +1,6 @@
 # TanStack DB IndexedDB Collection
 
-IndexedDB adapter for TanStack DB
+IndexedDB adapter for [TanStack DB](https://tanstack.com/db/latest) (using [idb](https://www.npmjs.com/package/idb))
 
 ## Usage Example
 

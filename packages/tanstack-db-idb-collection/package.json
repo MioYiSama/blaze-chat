@@ -1,6 +1,9 @@
 {
   "name": "@blaze-chat/tanstack-db-idb-collection",
-  "version": "0.0.1",
+  "version": "0.0.2",
+  "license": "Apache-2.0",
+  "author": "MioYi Sama",
+  "repository": "https://github.com/MioYiSama/blaze-chat/tree/main/packages/tanstack-db-idb-collection",
   "type": "module",
   "scripts": {
     "dev": "tsdown --watch",
