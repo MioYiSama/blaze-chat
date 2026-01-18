@@ -20,6 +20,7 @@
   "prettier": {
     "plugins": [
       "prettier-plugin-svelte"
-    ]
+    ],
+    "printWidth": 100
   }
 }

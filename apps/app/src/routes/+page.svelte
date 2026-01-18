@@ -1,18 +1,37 @@
 <script lang="ts">
-  import { Markdown } from "@blaze-chat/markdown";
+  import { assistantsCollection } from "$lib/data";
+  import { useLiveQuery } from "@tanstack/svelte-db";
+  import { uuidv7 } from "uuidv7";
+
+  const assistantsQuery = useLiveQuery((q) =>
+    q.from({ assistants: assistantsCollection }),
+  );
 </script>
 
-<Markdown
-  content={`
-# test
+<p>Chat Page</p>
+{#if assistantsQuery.isReady}
+  <p>{JSON.stringify(assistantsQuery.data)}</p>
+{/if}
 
-\`\`\`js
-const x = 1 + 2;
-\`\`\`
+<button
+  class="btn btn-primary"
+  onclick={() => {
+    assistantsCollection.insert({ id: uuidv7(), name: "a", modelId: null });
+  }}>Add</button
+>
 
-- 1
-- 2
-- 3
+<button
+  class="btn btn-primary"
+  onclick={() => {
+    assistantsCollection.update(assistantsQuery.data[0]!.id, (draft) => {
+      draft.name = uuidv7();
+    });
+  }}>Delete</button
+>
 
-`}
-/>
+<button
+  class="btn btn-primary"
+  onclick={() => {
+    assistantsCollection.delete(assistantsQuery.data[0]!.id);
+  }}>Delete</button
+>

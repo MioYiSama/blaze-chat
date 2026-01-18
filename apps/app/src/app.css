@@ -73,3 +73,12 @@
   --depth: 0;
   --noise: 0;
 }
+
+@layer base {
+  html,
+  body {
+    @apply size-full;
+    @apply overflow-hidden;
+    @apply touch-none;
+  }
+}

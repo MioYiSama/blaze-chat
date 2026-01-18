@@ -6,3 +6,4 @@ catalog:
   svelte: ^5.46.4
   tailwindcss: ^4.1.18
   "@tailwindcss/typography": ^0.5.19
+  tsdown: ^0.20.0-beta.3
