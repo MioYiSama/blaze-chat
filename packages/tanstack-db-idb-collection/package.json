@@ -1,7 +1,6 @@
 {
   "name": "@blaze-chat/tanstack-db-idb-collection",
   "version": "0.0.1",
-  "private": true,
   "type": "module",
   "scripts": {
     "dev": "tsdown --watch",
@@ -13,6 +12,9 @@
   "exports": {
     "import": "./dist/index.js",
     "types": "./dist/index.d.ts"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "dependencies": {
     "@standard-schema/spec": "^1.1.0",

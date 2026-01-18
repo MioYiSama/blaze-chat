@@ -78,6 +78,7 @@ class IDBCollectionConfig<
       }
       this.commit();
     };
+
     this.onUpdate = async ({ transaction }) => {
       const entities = transaction.mutations.map((m) => m.modified);
 
@@ -93,6 +94,7 @@ class IDBCollectionConfig<
       }
       this.commit();
     };
+
     this.onDelete = async ({ transaction }) => {
       const keys = transaction.mutations.map((m) => m.key as IdType);
 

@@ -4,7 +4,7 @@ IndexedDB adapter for TanStack DB
 
 ## Usage Example
 
-Define Schema:
+1. Define schema:
 
 ```ts
 import { MessageSchema } from "$lib/schema/Message";
@@ -18,7 +18,7 @@ export const TopicSchema = v.object({
 });
 ```
 
-Define Database and Collection:
+2. Create database and collection:
 
 ```ts
 import { AssistantSchema } from "$lib/schema/Assistant";
