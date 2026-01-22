@@ -8,6 +8,7 @@ const processor = (async () => {
     remarkGfm,
     remarkMath,
     remarkRehype,
+    rehypeRaw,
     rehypeKatex,
     rehypeShiki,
     rehypeStringify,
@@ -16,6 +17,7 @@ const processor = (async () => {
     (await import("remark-gfm")).default,
     (await import("remark-math")).default,
     (await import("remark-rehype")).default,
+    (await import("rehype-raw")).default,
     (await import("rehype-katex")).default,
     (await import("@shikijs/rehype/core")).default,
     (await import("rehype-stringify")).default,
@@ -25,7 +27,8 @@ const processor = (async () => {
     .use(remarkParse)
     .use(remarkGfm)
     .use(remarkMath)
-    .use(remarkRehype)
+    .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeRaw)
     .use(rehypeKatex)
     .use(rehypeShiki, await highlighter, shikiOptions)
     .use(rehypeStringify);

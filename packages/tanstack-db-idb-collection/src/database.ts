@@ -26,13 +26,16 @@ export function createDatabase<const T extends ObjectStores>(
 ): Database<T> {
   const idb = openDB(name, version, {
     async upgrade(database) {
-      for (const [key, { idPath: keyPath, indicies }] of Object.entries(objectStores)) {
-        const objectStore = database.createObjectStore(key, { keyPath });
+      for (const [objectStoreName, { idPath, indicies, upgrade }] of Object.entries(objectStores)) {
+        const objectStore = database.createObjectStore(objectStoreName, { keyPath: idPath });
 
         if (indicies) {
           // oxlint-disable-next-line no-await-in-loop
           await Promise.all(indicies.map((index) => objectStore.createIndex(index, index)));
         }
+
+        // oxlint-disable-next-line no-await-in-loop
+        await upgrade?.(objectStore);
       }
     },
   });

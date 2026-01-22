@@ -1,8 +1,14 @@
 {
   "name": "@blaze-chat/tanstack-db-idb-collection",
-  "version": "0.0.4",
-  "license": "Apache-2.0",
+  "version": "0.0.5",
+  "description": "IndexedDB adapter for TanStack DB (using idb)",
+  "keywords": [
+    "TanStack",
+    "TanStack DB",
+    "IndexedDB"
+  ],
   "author": "MioYi Sama",
+  "license": "Apache-2.0",
   "repository": "https://github.com/MioYiSama/blaze-chat/tree/main/packages/tanstack-db-idb-collection",
   "type": "module",
   "scripts": {

@@ -11,7 +11,7 @@
 </script>
 
 <div class="size-full flex flex-col sm:flex-row-reverse">
-  <main class="grow">
+  <main class="grow overflow-auto">
     {@render children()}
   </main>
 
@@ -19,15 +19,9 @@
     <ul class="size-full flex flex-row sm:flex-col not-sm:justify-evenly">
       {@render NavItem("/", LucideMessageCircle, (route) => route === "/")}
       <div class="grow not-sm:hidden"><!-- Spacer --></div>
-      {@render NavItem("/settings", LucideSettings, (route) =>
-        route.startsWith("/settings"),
-      )}
+      {@render NavItem("/settings", LucideSettings, (route) => route.startsWith("/settings"))}
 
-      {#snippet NavItem(
-        href: string,
-        Icon: Component,
-        active: (route: string) => boolean,
-      )}
+      {#snippet NavItem(href: string, Icon: Component, active: (route: string) => boolean)}
         <li>
           <a {href} class="btn btn-square size-10 sm:size-12">
             <Icon

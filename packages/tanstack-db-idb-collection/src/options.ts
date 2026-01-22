@@ -60,7 +60,7 @@ export class IDBCollectionConfig<
 
       const tx = (await idb).transaction(name, "readwrite");
 
-      await Promise.all(entities.map((entity) => tx.store.add(entity)));
+      await Promise.all(entities.map((entity) => tx.objectStore(name).add(entity)));
 
       await tx.done;
 

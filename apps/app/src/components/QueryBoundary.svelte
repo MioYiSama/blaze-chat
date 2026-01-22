@@ -1,4 +1,5 @@
-<script lang="ts" generics="T extends object">
+<script lang="ts" generics="T extends object, TData = Array<T>">
+  import ErrorAlert from "$comp/ErrorAlert.svelte";
   import type { UseLiveQueryReturn } from "@tanstack/svelte-db";
   import type { Snippet } from "svelte";
 
@@ -6,15 +7,15 @@
     query,
     ready,
   }: {
-    query: UseLiveQueryReturn<T>;
-    ready: Snippet<[T[]]>;
+    query: UseLiveQueryReturn<T, TData>;
+    ready: Snippet<[NonNullable<TData>]>;
   } = $props();
 </script>
 
 {#if query.isLoading}
-  <p>Loading</p>
+  <span class="loading loading-spinner loading-xl"></span>
 {:else if query.isError}
-  <p>Error</p>
-{:else}
+  <ErrorAlert />
+{:else if query.data}
   {@render ready(query.data)}
 {/if}

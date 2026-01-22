@@ -1,4 +1,5 @@
 import type { StandardSchemaV1 } from "@standard-schema/spec";
+import type { IDBPObjectStore } from "idb";
 
 export type ValidId = number | string;
 
@@ -13,6 +14,9 @@ export type ObjectStore<Entity extends object = any, IdPath extends ValidIdPath<
   schema: StandardSchemaV1<Entity>;
   idPath: IdPath;
   indicies?: (keyof Entity & string)[];
+  upgrade?: (
+    objectStore: IDBPObjectStore<unknown, ArrayLike<string>, string, "versionchange">,
+  ) => Promise<void>;
 };
 
 export type ObjectStores = Record<string, ObjectStore>;
@@ -34,3 +38,10 @@ export type ObjectStoreIdPath<Store extends ObjectStore> =
  */
 export type ObjectStoreIdType<Store extends ObjectStore> =
   Store extends ObjectStore<infer Entity, infer IdPath> ? Entity[IdPath] : never;
+
+export type IDBSchema<T extends ObjectStores> = {
+  [K in keyof T]: {
+    value: ObjectStoreEntity<T[K]>;
+    key: ObjectStoreIdType<T[K]>;
+  };
+};
