@@ -1,7 +1,13 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import QueryBoundary from "$comp/QueryBoundary.svelte";
-  import { topicsCollection, ZeroUUID } from "$lib/data";
+  import {
+    assistantsCollection,
+    modelsCollection,
+    providersCollection,
+    topicsCollection,
+    ZeroUUID,
+  } from "$lib/data";
   import { getUrlQueryParam } from "$lib/util.svelte";
   import { Markdown } from "@blaze-chat/markdown";
   import { and, eq, useLiveQuery } from "@tanstack/svelte-db";
@@ -16,6 +22,7 @@
 
   const assistantId = $derived(getUrlQueryParam("assistant") ?? ZeroUUID);
   const topicId = $derived(getUrlQueryParam("topic"));
+  let providersQuery = useLiveQuery((q) => q.from({ providers: providersCollection }));
 
   const topicQuery = useLiveQuery((q) => {
     return q
@@ -23,6 +30,21 @@
       .where(({ topic }) => and(eq(topic.id, topicId), eq(topic.assistantId, assistantId)))
       .findOne();
   });
+
+  const assistantQuery = useLiveQuery((q) =>
+    q
+      .from({ assistant: assistantsCollection })
+      .where(({ assistant }) => eq(assistant.id, assistantId))
+      .findOne()
+      .innerJoin({ model: modelsCollection }, ({ assistant, model }) =>
+        eq(assistant.modelId, model.id),
+      )
+      .findOne()
+      .innerJoin({ provider: providersCollection }, ({ model, provider }) =>
+        eq(model.providerId, provider.id),
+      )
+      .findOne(),
+  );
 </script>
 
 <div class="size-full grid" style="grid-template-rows: 1fr 6px {textareaHeight}px;">
@@ -84,6 +106,8 @@
     <button
       class="btn btn-primary self-end"
       onclick={async () => {
+        if (!assistantQuery.data) return;
+
         if (topicId) {
           const tx = topicsCollection.update(topicId, (draft) => {
             draft.messages.push({
@@ -113,7 +137,34 @@
           await goto(`?assistant=${assistantId}&topic=${id}`);
         }
 
+        const response = await fetch(
+          assistantQuery.data.provider.baseUrl ?? "https://openrouter.ai/api/v1/chat/completions",
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${assistantQuery.data.provider.apiKey}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              model: assistantQuery.data.model.identifier,
+              messages: topicQuery.data!.messages,
+            }),
+          },
+        );
+
         textareaContent = "";
+
+        const result = await response.json();
+        console.log(result);
+
+        const tx = topicsCollection.update(topicId, (draft) => {
+          draft.messages.push({
+            role: "assistant",
+            content: result["choices"][0]["message"]["content"],
+          });
+        });
+
+        await tx.isPersisted.promise;
       }}
     >
       <LucideSend />

@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@standard-schema/spec": "^1.1.0",
-    "@tanstack/db": "^0.5.20",
+    "@tanstack/db": "^0.5.23",
     "idb": "^8.0.3"
   },
   "devDependencies": {

@@ -14,19 +14,23 @@
 
   const assistantQuery = useLiveQuery((q) =>
     q
-      .from({
-        assistant: assistantsCollection,
-      })
+      .from({ assistant: assistantsCollection })
       .where(({ assistant }) => eq(assistant.id, assistantId))
       .findOne(),
   );
 
-  const topicQuery = useLiveQuery((q) => {
-    return q
+  const topicsQuery = useLiveQuery((q) =>
+    q.from({ topics: topicsCollection }).where(({ topics }) => eq(topics.assistantId, assistantId)),
+  );
+
+  const topicQuery = useLiveQuery((q) =>
+    q
       .from({ topic: topicsCollection })
       .where(({ topic }) => and(eq(topic.id, topicId), eq(topic.assistantId, assistantId)))
-      .findOne();
-  });
+      .findOne(),
+  );
+
+  let historyDialog: HTMLDialogElement;
 </script>
 
 <div class="size-full grid grid-cols-[max-content_1fr_max-content] items-center px-2">
@@ -34,7 +38,7 @@
     <button class="btn btn-ghost btn-square sm:hidden" onclick={() => showSidebar()}>
       <LucideChevronLeft />
     </button>
-    <button class="btn btn-ghost btn-square">
+    <button class="btn btn-ghost btn-square" onclick={() => historyDialog.showModal()}>
       <LucideHistory />
     </button>
   </div>
@@ -59,8 +63,36 @@
         <LucideMessageCirclePlus />
       </a>
     {/if}
-    <button class="btn btn-ghost btn-square">
+    <a href="/settings/assistant?id={assistantId}" class="btn btn-ghost btn-square">
       <LucideEllipsis />
-    </button>
+    </a>
   </div>
 </div>
+
+<dialog bind:this={historyDialog} class="modal">
+  <div class="modal-box max-h-3/4 overflow-hidden flex flex-col">
+    <h1 class="font-bold text-center text-xl">话题列表</h1>
+
+    <ul class="flex flex-col items-center overflow-y-scroll flex-1 min-h-0">
+      <QueryBoundary query={topicsQuery}>
+        {#snippet ready(topics)}
+          {#each topics as { id, name }}
+            <li>
+              <a
+                href="?assistant={assistantId}&topic={id}"
+                onclick={() => historyDialog.close()}
+                class="btn btn-ghost text-lg font-normal py-8"
+              >
+                {name}
+              </a>
+            </li>
+          {/each}
+        {/snippet}
+      </QueryBoundary>
+    </ul>
+  </div>
+
+  <form method="dialog" class="modal-backdrop">
+    <button class="cursor-auto">close</button>
+  </form>
+</dialog>

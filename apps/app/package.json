@@ -10,22 +10,22 @@
     "prepare": "svelte-kit sync"
   },
   "dependencies": {
-    "@blaze-chat/tanstack-db-idb-collection": "workspace:*",
     "@blaze-chat/markdown": "workspace:*",
-    "@tanstack/svelte-db": "^0.1.63",
+    "@blaze-chat/tanstack-db-idb-collection": "workspace:*",
+    "@tanstack/svelte-db": "^0.1.66",
     "uuidv7": "^1.1.0",
     "valibot": "^1.2.0"
   },
   "devDependencies": {
-    "@iconify/json": "^2.2.429",
+    "@iconify/json": "^2.2.431",
     "@sveltejs/adapter-static": "^3.0.10",
-    "@sveltejs/kit": "^2.49.5",
+    "@sveltejs/kit": "^2.50.1",
     "@tailwindcss/typography": "catalog:",
     "@tailwindcss/vite": "^4.1.18",
     "daisyui": "^5.5.14",
     "svelte": "catalog:",
     "tailwindcss": "catalog:",
     "unplugin-icons": "catalog:",
-    "vite": "^8.0.0-beta.8"
+    "vite": "8.0.0-beta.9"
   }
 }
