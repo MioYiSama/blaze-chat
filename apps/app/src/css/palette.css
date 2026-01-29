@@ -1,0 +1,21 @@
+:root {
+  --foreground: black;
+  --background: var(--gray6);
+  --surface: var(--gray5);
+  --card: var(--gray4);
+
+  --primary: var(--green);
+
+  @variant dark {
+    --foreground: white;
+  }
+}
+
+@theme inline {
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-card: var(--card);
+
+  --color-primary: var(--primary);
+}

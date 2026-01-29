@@ -1,0 +1,115 @@
+/* https://developer.apple.com/design/human-interface-guidelines/color#Specifications */
+
+:root {
+  --red: rgb(255 56 60);
+  --orange: rgb(255 141 40);
+  --yellow: rgb(255 204 0);
+  --green: rgb(52 199 89);
+  --mint: rgb(0 200 179);
+  --teal: rgb(0 195 208);
+  --cyan: rgb(0 192 232);
+  --blue: rgb(0 136 255);
+  --indigo: rgb(97 85 245);
+  --purple: rgb(203 48 224);
+  --pink: rgb(255 45 85);
+  --brown: rgb(172 127 94);
+
+  @variant dark {
+    --red: rgb(255 66 69);
+    --orange: rgb(255 146 48);
+    --yellow: rgb(255 214 0);
+    --green: rgb(48 209 88);
+    --mint: rgb(0 218 195);
+    --teal: rgb(0 210 224);
+    --cyan: rgb(60 211 254);
+    --blue: rgb(0 145 255);
+    --indigo: rgb(109 124 255);
+    --purple: rgb(219 52 242);
+    --pink: rgb(255 55 95);
+    --brown: rgb(183 138 102);
+  }
+
+  --gray: rgb(142 142 147);
+  --gray2: rgb(174 174 178);
+  --gray3: rgb(199 199 204);
+  --gray4: rgb(209 209 214);
+  --gray5: rgb(229 229 234);
+  --gray6: rgb(242 242 247);
+
+  @variant dark {
+    --gray: rgb(142 142 147);
+    --gray2: rgb(99 99 102);
+    --gray3: rgb(72 72 74);
+    --gray4: rgb(58 58 60);
+    --gray5: rgb(44 44 46);
+    --gray6: rgb(28 28 30);
+  }
+
+  @variant contrast-more {
+    --red: rgb(233 21 45);
+    --orange: rgb(197 83 0);
+    --yellow: rgb(161 106 0);
+    --green: rgb(0 137 50);
+    --mint: rgb(0 133 117);
+    --teal: rgb(0 129 152);
+    --cyan: rgb(0 126 174);
+    --blue: rgb(30 110 244);
+    --indigo: rgb(86 74 222);
+    --purple: rgb(176 47 194);
+    --pink: rgb(231 18 77);
+    --brown: rgb(149 109 81);
+
+    @variant dark {
+      --red: rgb(255 97 101);
+      --orange: rgb(255 160 86);
+      --yellow: rgb(254 223 67);
+      --green: rgb(74 217 104);
+      --mint: rgb(84 223 203);
+      --teal: rgb(59 221 236);
+      --cyan: rgb(109 217 255);
+      --blue: rgb(92 184 255);
+      --indigo: rgb(167 170 255);
+      --purple: rgb(234 141 255);
+      --pink: rgb(255 138 196);
+      --brown: rgb(219 166 121);
+    }
+
+    --gray: rgb(108 108 112);
+    --gray2: rgb(142 142 147);
+    --gray3: rgb(174 174 178);
+    --gray4: rgb(188 188 192);
+    --gray5: rgb(216 216 220);
+    --gray6: rgb(235 235 240);
+
+    @variant dark {
+      --gray: rgb(174 174 178);
+      --gray2: rgb(124 124 128);
+      --gray3: rgb(84 84 86);
+      --gray4: rgb(68 68 70);
+      --gray5: rgb(54 54 56);
+      --gray6: rgb(36 36 38);
+    }
+  }
+}
+
+@theme inline {
+  --color-red: var(--red);
+  --color-orange: var(--orange);
+  --color-yellow: var(--yellow);
+  --color-green: var(--green);
+  --color-mint: var(--mint);
+  --color-teal: var(--teal);
+  --color-cyan: var(--cyan);
+  --color-blue: var(--blue);
+  --color-indigo: var(--indigo);
+  --color-purple: var(--purple);
+  --color-pink: var(--pink);
+  --color-brown: var(--brown);
+
+  --color-gray: var(--gray);
+  --color-gray2: var(--gray2);
+  --color-gray3: var(--gray3);
+  --color-gray4: var(--gray4);
+  --color-gray5: var(--gray5);
+  --color-gray6: var(--gray6);
+}

@@ -1,0 +1,38 @@
+{
+  "name": "@blaze-chat/app",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vite dev --host",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@blaze-chat/effect-idb": "workspace:^",
+    "@iconify-json/lucide": "^1.2.87",
+    "@tanstack/solid-query": "^5.90.23",
+    "@tanstack/solid-router": "^1.157.16",
+    "effect": "catalog:",
+    "idb": "^8.0.3",
+    "solid-js": "catalog:",
+    "uuidv7": "^1.1.0",
+    "valibot": "^1.2.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.18",
+    "@tanstack/devtools-vite": "^0.4.1",
+    "@tanstack/router-plugin": "^1.157.16",
+    "@tanstack/solid-devtools": "^0.7.23",
+    "@tanstack/solid-query-devtools": "^5.91.2",
+    "@tanstack/solid-router-devtools": "^1.157.16",
+    "tailwindcss": "^4.1.18",
+    "terser": "^5.46.0",
+    "unplugin-icons": "^23.0.1",
+    "vite": "catalog:",
+    "vite-plugin-solid": "^2.11.10"
+  }
+}

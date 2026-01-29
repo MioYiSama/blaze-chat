@@ -1,0 +1,16 @@
+{
+  "extends": ["../../tsconfig.json"],
+  "compilerOptions": {
+    "types": ["unplugin-icons/types/solid"],
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "allowImportingTsExtensions": true,
+    "noEmit": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "*.config.ts"],
+  "references": [
+    {
+      "path": "../../packages/effect-idb"
+    }
+  ]
+}

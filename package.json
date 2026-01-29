@@ -1,0 +1,19 @@
+{
+  "name": "blaze-chat",
+  "private": true,
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "preview": "turbo run preview",
+    "lint": "oxlint --type-aware",
+    "format": "oxfmt"
+  },
+  "devDependencies": {
+    "oxfmt": "^0.26.0",
+    "oxlint": "^1.42.0",
+    "oxlint-tsgolint": "^0.11.2",
+    "turbo": "^2.7.6",
+    "typescript": "^5.9.3"
+  },
+  "packageManager": "pnpm@10.28.1"
+}

@@ -1,0 +1,46 @@
+@import "tailwindcss";
+@import "./color.css";
+@import "./palette.css";
+@import "./typography.css";
+
+:root {
+  @apply body text-foreground bg-background;
+}
+
+@layer base {
+  html,
+  body {
+    @apply size-full touch-none overflow-hidden;
+  }
+
+  button {
+    @apply cursor-pointer;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--surface) transparent;
+  }
+}
+
+#app {
+  @apply contents;
+}
+
+@utility circle {
+  border-radius: 50%;
+}
+
+@utility icon-button {
+  @apply hover:bg-card rounded-md p-1 transition-colors;
+}
+
+@custom-variant adaptive-hover {
+  @media (hover: none) {
+    @slot;
+  }
+
+  @variant hover {
+    @slot;
+  }
+}
