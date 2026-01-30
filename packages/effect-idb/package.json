@@ -1,6 +1,6 @@
 {
   "name": "@blaze-chat/effect-idb",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "IndexedDB API Wrapped with Effect-TS",
   "keywords": [
     "Effect",
@@ -9,6 +9,7 @@
     "idb"
   ],
   "author": "MioYiSama",
+  "repository": "https://github.com/MioYiSama/blaze-chat",
   "files": [
     "dist"
   ],

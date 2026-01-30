@@ -9,16 +9,14 @@ import { createSignal, For } from "solid-js";
 
 export const Route = createFileRoute("/settings/")({
   staticData: {
-    settingsName: "通用",
+    settingsName: "通用设置",
   },
-  component: CommonSettings,
+  component: CommonSettingsPage,
 });
 
-function CommonSettings() {
+function CommonSettingsPage() {
   return (
     <div>
-      <p>主题色</p>
-
       <PrimaryColorForm />
     </div>
   );
@@ -38,6 +36,8 @@ function PrimaryColorForm() {
 
   return (
     <form class="flex flex-row flex-wrap items-center gap-2" onChange={onChange}>
+      <h3 class="title3 shrink-0">主题色</h3>
+
       <For each={PrimaryColors}>
         {(c) => (
           <label

@@ -1,11 +1,13 @@
-import { queryClient } from "#data/query.ts";
+import { queryClient } from "#data/index.ts";
 import type { FileRoutesByTo } from "#routeTree.gen.ts";
+import type { Icon } from "#util/types.ts";
 import { TanStackDevtools } from "@tanstack/solid-devtools";
+import { FormDevtools } from "@tanstack/solid-form-devtools";
 import { QueryClientProvider } from "@tanstack/solid-query";
 import { SolidQueryDevtoolsPanel } from "@tanstack/solid-query-devtools";
 import { createRootRoute, Link, Outlet } from "@tanstack/solid-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/solid-router-devtools";
-import type { ComponentProps, JSXElement } from "solid-js";
+import { Dynamic } from "solid-js/web";
 import LucideMessageCircle from "~icons/lucide/message-circle";
 import LucideSettings from "~icons/lucide/settings";
 
@@ -17,12 +19,16 @@ export const Route = createRootRoute({
       <TanStackDevtools
         plugins={[
           {
-            name: "Router",
+            name: "TanStack Router",
             render: () => <TanStackRouterDevtoolsPanel />,
           },
           {
-            name: "Query",
+            name: "TanStack Query",
             render: () => <SolidQueryDevtoolsPanel />,
+          },
+          {
+            name: "TanStack Form",
+            render: () => <FormDevtools />,
           },
         ]}
       />
@@ -38,33 +44,26 @@ function RootLayout() {
         <Outlet />
       </main>
 
-      <nav class="bg-surface py-1 sm:px-1">
-        <ul class="flex size-full flex-row not-sm:justify-evenly sm:flex-col">
-          <NavItem to="/" icon={LucideMessageCircle} />
-          <div class="grow not-sm:hidden">{/* Spacer */}</div>
-          <NavItem to="/settings" icon={LucideSettings} />
-        </ul>
+      <nav class="bg-surface flex flex-row py-1 not-sm:justify-evenly sm:flex-col sm:px-1">
+        <NavItem to="/" icon={LucideMessageCircle} />
+        <div class="grow not-sm:hidden">{/* Spacer */}</div>
+        <NavItem to="/settings" icon={LucideSettings} />
       </nav>
     </div>
   );
 }
 
-function NavItem(props: {
-  to: keyof FileRoutesByTo;
-  icon: (props: ComponentProps<"svg">) => JSXElement;
-}) {
+function NavItem(props: { to: keyof FileRoutesByTo; icon: Icon }) {
   return (
-    <li>
-      <Link to={props.to} class="icon-button [&.active]:text-primary block">
-        <props.icon />
-      </Link>
-    </li>
+    <Link to={props.to} class="btn-ghost link-active">
+      <Dynamic component={props.icon} />
+    </Link>
   );
 }
 
 function NotFoundPage() {
   return (
-    <div class="flex size-full items-center justify-center">
+    <div class="center-child size-full">
       <h1 class="large-title">
         <strong>404 Not Found</strong>
       </h1>

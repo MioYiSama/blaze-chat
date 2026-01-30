@@ -2,7 +2,7 @@ import type { IndexSchemas } from "./idx";
 import type { KeyOrKeys, PickKeyOrKeys } from "./types";
 import { Micro } from "effect";
 
-import { DatabaseError, ObjectStoreError, TransactionError } from "./error";
+import { DatabaseError, ObjectStoreError, TransactionError, type ValidationError } from "./error";
 import { ObjectStore, type ObjectStoreSchema, type ObjectStoreSchemas } from "./object-store";
 import { Transaction } from "./transaction";
 
@@ -15,7 +15,7 @@ export class Database<S extends ObjectStoreSchemas> {
       }),
 
       (request) =>
-        Micro.async<Database<S>, DatabaseError | ObjectStoreError>((resume) => {
+        Micro.async<Database<S>, DatabaseError | ObjectStoreError | ValidationError>((resume) => {
           request.addEventListener("success", () =>
             resume(Micro.succeed(new Database(request.result, schemas))),
           );

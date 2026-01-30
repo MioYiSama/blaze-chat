@@ -10,13 +10,20 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as AssistantRouteImport } from './routes/assistant'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SettingsIndexRouteImport } from './routes/settings/index'
-import { Route as SettingsProviderRouteImport } from './routes/settings/provider'
+import { Route as SettingsProvidersIndexRouteImport } from './routes/settings/providers/index'
+import { Route as SettingsProvidersProviderRouteImport } from './routes/settings/providers/provider'
 
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AssistantRoute = AssistantRouteImport.update({
+  id: '/assistant',
+  path: '/assistant',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -29,40 +36,71 @@ const SettingsIndexRoute = SettingsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => SettingsRoute,
 } as any)
-const SettingsProviderRoute = SettingsProviderRouteImport.update({
-  id: '/provider',
-  path: '/provider',
+const SettingsProvidersIndexRoute = SettingsProvidersIndexRouteImport.update({
+  id: '/providers/',
+  path: '/providers/',
   getParentRoute: () => SettingsRoute,
 } as any)
+const SettingsProvidersProviderRoute =
+  SettingsProvidersProviderRouteImport.update({
+    id: '/providers/provider',
+    path: '/providers/provider',
+    getParentRoute: () => SettingsRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/assistant': typeof AssistantRoute
   '/settings': typeof SettingsRouteWithChildren
-  '/settings/provider': typeof SettingsProviderRoute
   '/settings/': typeof SettingsIndexRoute
+  '/settings/providers/provider': typeof SettingsProvidersProviderRoute
+  '/settings/providers/': typeof SettingsProvidersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/settings/provider': typeof SettingsProviderRoute
+  '/assistant': typeof AssistantRoute
   '/settings': typeof SettingsIndexRoute
+  '/settings/providers/provider': typeof SettingsProvidersProviderRoute
+  '/settings/providers': typeof SettingsProvidersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/assistant': typeof AssistantRoute
   '/settings': typeof SettingsRouteWithChildren
-  '/settings/provider': typeof SettingsProviderRoute
   '/settings/': typeof SettingsIndexRoute
+  '/settings/providers/provider': typeof SettingsProvidersProviderRoute
+  '/settings/providers/': typeof SettingsProvidersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/settings' | '/settings/provider' | '/settings/'
+  fullPaths:
+    | '/'
+    | '/assistant'
+    | '/settings'
+    | '/settings/'
+    | '/settings/providers/provider'
+    | '/settings/providers/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/settings/provider' | '/settings'
-  id: '__root__' | '/' | '/settings' | '/settings/provider' | '/settings/'
+  to:
+    | '/'
+    | '/assistant'
+    | '/settings'
+    | '/settings/providers/provider'
+    | '/settings/providers'
+  id:
+    | '__root__'
+    | '/'
+    | '/assistant'
+    | '/settings'
+    | '/settings/'
+    | '/settings/providers/provider'
+    | '/settings/providers/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AssistantRoute: typeof AssistantRoute
   SettingsRoute: typeof SettingsRouteWithChildren
 }
 
@@ -73,6 +111,13 @@ declare module '@tanstack/solid-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/assistant': {
+      id: '/assistant'
+      path: '/assistant'
+      fullPath: '/assistant'
+      preLoaderRoute: typeof AssistantRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -89,24 +134,33 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof SettingsIndexRouteImport
       parentRoute: typeof SettingsRoute
     }
-    '/settings/provider': {
-      id: '/settings/provider'
-      path: '/provider'
-      fullPath: '/settings/provider'
-      preLoaderRoute: typeof SettingsProviderRouteImport
+    '/settings/providers/': {
+      id: '/settings/providers/'
+      path: '/providers'
+      fullPath: '/settings/providers/'
+      preLoaderRoute: typeof SettingsProvidersIndexRouteImport
+      parentRoute: typeof SettingsRoute
+    }
+    '/settings/providers/provider': {
+      id: '/settings/providers/provider'
+      path: '/providers/provider'
+      fullPath: '/settings/providers/provider'
+      preLoaderRoute: typeof SettingsProvidersProviderRouteImport
       parentRoute: typeof SettingsRoute
     }
   }
 }
 
 interface SettingsRouteChildren {
-  SettingsProviderRoute: typeof SettingsProviderRoute
   SettingsIndexRoute: typeof SettingsIndexRoute
+  SettingsProvidersProviderRoute: typeof SettingsProvidersProviderRoute
+  SettingsProvidersIndexRoute: typeof SettingsProvidersIndexRoute
 }
 
 const SettingsRouteChildren: SettingsRouteChildren = {
-  SettingsProviderRoute: SettingsProviderRoute,
   SettingsIndexRoute: SettingsIndexRoute,
+  SettingsProvidersProviderRoute: SettingsProvidersProviderRoute,
+  SettingsProvidersIndexRoute: SettingsProvidersIndexRoute,
 }
 
 const SettingsRouteWithChildren = SettingsRoute._addFileChildren(
@@ -115,6 +169,7 @@ const SettingsRouteWithChildren = SettingsRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AssistantRoute: AssistantRoute,
   SettingsRoute: SettingsRouteWithChildren,
 }
 export const routeTree = rootRouteImport

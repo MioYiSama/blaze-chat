@@ -1,5 +1,7 @@
 import "solid-js";
 
+import type { ComponentProps, JSXElement } from "solid-js";
+
 declare module "solid-js" {
   namespace JSX {
     interface InputHTMLAttributes<T> extends HTMLAttributes<T> {
@@ -7,3 +9,5 @@ declare module "solid-js" {
     }
   }
 }
+
+export type Icon = (props: ComponentProps<"svg">) => JSXElement;

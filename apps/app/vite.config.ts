@@ -21,7 +21,6 @@ export default defineConfig({
     modulePreload: {
       polyfill: false,
     },
-    chunkSizeWarningLimit: 256,
     minify: "terser",
     terserOptions: {
       compress: {

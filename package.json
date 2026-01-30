@@ -11,8 +11,8 @@
   "devDependencies": {
     "oxfmt": "^0.26.0",
     "oxlint": "^1.42.0",
-    "oxlint-tsgolint": "^0.11.2",
-    "turbo": "^2.7.6",
+    "oxlint-tsgolint": "^0.11.3",
+    "turbo": "^2.8.0",
     "typescript": "^5.9.3"
   },
   "packageManager": "pnpm@10.28.1"

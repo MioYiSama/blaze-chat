@@ -1,28 +1,28 @@
 /* https://developer.apple.com/design/human-interface-guidelines/typography#Specifications */
 
 :root {
-  --large-title-size: 34pt;
-  --title1-size: 28pt;
-  --title2-size: 22pt;
-  --title3-size: 20pt;
-  --headline-size: 17pt;
-  --body-size: 17pt;
-  --callout-size: 16pt;
-  --sub-headline-size: 15pt;
-  --footnote-size: 13pt;
-  --caption1-size: 12pt;
+  --large-title-size: 33pt;
+  --title1-size: 27pt;
+  --title2-size: 21pt;
+  --title3-size: 19pt;
+  --headline-size: 16pt;
+  --body-size: 16pt;
+  --callout-size: 15pt;
+  --sub-headline-size: 14pt;
+  --footnote-size: 12pt;
+  --caption1-size: 11pt;
   --caption2-size: 11pt;
 
-  --large-title-leading: 41pt;
-  --title1-leading: 34pt;
-  --title2-leading: 28pt;
-  --title3-leading: 25pt;
-  --headline-leading: 22pt;
-  --body-leading: 22pt;
-  --callout-leading: 21pt;
-  --sub-headline-leading: 20pt;
-  --footnote-leading: 18pt;
-  --caption1-leading: 16pt;
+  --large-title-leading: 40pt;
+  --title1-leading: 33pt;
+  --title2-leading: 26pt;
+  --title3-leading: 24pt;
+  --headline-leading: 21pt;
+  --body-leading: 21pt;
+  --callout-leading: 20pt;
+  --sub-headline-leading: 19pt;
+  --footnote-leading: 16pt;
+  --caption1-leading: 13pt;
   --caption2-leading: 13pt;
 
   --large-title-strong: var(--font-weight-bold);
@@ -38,15 +38,15 @@
   --caption2-strong: var(--font-weight-semibold);
 
   --large-title-tracking: 0.4pt;
-  --title1-tracking: 0.38pt;
-  --title2-tracking: -0.26pt;
+  --title1-tracking: 0.29pt;
+  --title2-tracking: -0.36pt;
   --title3-tracking: -0.45pt;
-  --headline-tracking: -0.43pt;
-  --body-tracking: -0.43pt;
-  --callout-tracking: -0.31pt;
-  --sub-headline-tracking: -0.23pt;
-  --footnote-tracking: -0.08pt;
-  --caption1-tracking: 0pt;
+  --headline-tracking: -0.31pt;
+  --body-tracking: -0.31pt;
+  --callout-tracking: -0.23pt;
+  --sub-headline-tracking: -0.15pt;
+  --footnote-tracking: 0pt;
+  --caption1-tracking: 0.06pt;
   --caption2-tracking: 0.06pt;
 
   @variant pointer-fine {

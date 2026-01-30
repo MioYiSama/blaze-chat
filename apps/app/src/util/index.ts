@@ -3,3 +3,7 @@ export function clamp(min: number, value: number, max: number): number {
   else if (value > max) return max;
   else return value;
 }
+
+export function emptyStringAsNull(x: string): string | null {
+  return x === "" ? null : x;
+}

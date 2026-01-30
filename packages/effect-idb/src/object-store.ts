@@ -19,7 +19,7 @@ export type ObjectStoreSchema<
   readonly indexes?: I;
   readonly setup?: (
     objectStore: ObjectStoreFromTKI<T, Ks, I>,
-  ) => Micro.Micro<any, ObjectStoreError>;
+  ) => Micro.Micro<any, ObjectStoreError | ValidationError>;
 };
 export type ObjectStoreSchemas = Record<string, ObjectStoreSchema<any, any, any>>;
 

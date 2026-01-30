@@ -1,10 +1,11 @@
+import "@valibot/i18n/zh-CN";
+
 import { getPrimaryColor, setRootPrimaryColor } from "#data/settings.ts";
 import { RouterProvider, createRouter } from "@tanstack/solid-router";
 import { render } from "solid-js/web";
+import * as v from "valibot";
 
 import { routeTree } from "./routeTree.gen";
-
-const router = createRouter({ routeTree });
 
 declare module "@tanstack/solid-router" {
   interface Register {
@@ -18,6 +19,9 @@ if (!app) {
   throw new Error("Unable to find the app element");
 }
 
+v.setGlobalConfig({ lang: "zh-CN" });
 setRootPrimaryColor(getPrimaryColor());
+
+const router = createRouter({ routeTree });
 
 render(() => <RouterProvider router={router} />, app);

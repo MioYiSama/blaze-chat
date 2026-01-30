@@ -3,8 +3,10 @@
   --background: var(--gray6);
   --surface: var(--gray5);
   --card: var(--gray4);
+  --backdrop: --alpha(var(--surface) / 80%);
 
   --primary: var(--green);
+  --error: var(--red);
 
   @variant dark {
     --foreground: white;
@@ -16,6 +18,8 @@
   --color-background: var(--background);
   --color-surface: var(--surface);
   --color-card: var(--card);
+  --color-backdrop: var(--backdrop);
 
   --color-primary: var(--primary);
+  --color-error: var(--error);
 }

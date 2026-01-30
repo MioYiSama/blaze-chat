@@ -13,8 +13,18 @@
     @apply size-full touch-none overflow-hidden;
   }
 
+  dialog {
+    @apply m-auto;
+    @apply text-foreground bg-background backdrop:bg-backdrop;
+  }
+
   button {
     @apply cursor-pointer;
+  }
+
+  input,
+  select {
+    @apply min-w-0;
   }
 
   * {
@@ -31,8 +41,8 @@
   border-radius: 50%;
 }
 
-@utility icon-button {
-  @apply hover:bg-card rounded-md p-1 transition-colors;
+@utility center-child {
+  @apply flex flex-row items-center justify-center;
 }
 
 @custom-variant adaptive-hover {
@@ -43,4 +53,20 @@
   @variant hover {
     @slot;
   }
+}
+
+@utility link-active {
+  @apply [&.active]:text-primary;
+}
+
+@utility btn-ghost {
+  @apply hover:bg-card block rounded-md p-1 transition-colors;
+}
+
+@utility btn-primary {
+  @apply bg-primary flex flex-row items-center justify-center gap-2 rounded-lg px-4 py-2;
+}
+
+@utility input {
+  @apply border-card rounded-md border px-2 py-1;
 }
