@@ -1,4 +1,5 @@
 import { Dialog } from "#components/Dialog.tsx";
+import { FieldInfo } from "#components/FieldInfo.tsx";
 import {
   ModelIcons,
   ModelSchema,
@@ -8,7 +9,8 @@ import {
   type Model,
   type ModelType,
 } from "#data/Model.ts";
-import { useProviderQuery } from "#data/Provider.ts";
+import { ProviderSchema, useProviderQuery, type Provider } from "#data/Provider.ts";
+import { createForm } from "@tanstack/solid-form";
 import { createFileRoute } from "@tanstack/solid-router";
 import { createSignal, For, Show } from "solid-js";
 import { Dynamic } from "solid-js/web";
@@ -29,25 +31,26 @@ export const Route = createFileRoute("/settings/providers/provider")({
 function ProviderPage() {
   const providerId = Route.useSearch({ select: (search) => search.id });
 
-  const provider = useProviderQuery(providerId);
-  const models = useProviderModelsQuery(providerId);
+  const providerQuery = useProviderQuery(providerId);
+  const modelsQuery = useProviderModelsQuery(providerId);
+
   const [dialog, setDialog] = createSignal(false);
 
   return (
-    <>
-      <div>
-        <Show when={provider.isSuccess && provider.data}>
-          {(provider) => <p>{provider().name}</p>}
-        </Show>
+    <div>
+      <Show when={providerQuery.data}>{(provider) => <ProviderForm provider={provider()} />}</Show>
 
-        <button class="btn-primary" onClick={() => setDialog(true)}>
-          <LucidePlus />
-          <span>添加模型</span>
-        </button>
-      </div>
+      <button class="btn-primary" onClick={() => setDialog(true)}>
+        <LucidePlus />
+        <span>添加模型</span>
+      </button>
+
+      <Dialog open={dialog()} onClose={() => setDialog(false)}>
+        <AddModelForm providerId={providerId()} onComplete={() => setDialog(false)} />
+      </Dialog>
 
       <div class="flex flex-row flex-wrap gap-2 overflow-y-scroll">
-        <For each={models.data}>
+        <For each={modelsQuery.data}>
           {({ identifier, name, type }) => (
             <div class="bg-surface btn-primary rounded-lg p-6">
               <Dynamic component={ModelIcons[type]} />
@@ -59,11 +62,47 @@ function ProviderPage() {
           )}
         </For>
       </div>
+    </div>
+  );
+}
 
-      <Dialog open={dialog()} onClose={() => setDialog(false)}>
-        <AddModelForm providerId={providerId()} onComplete={() => setDialog(false)} />
-      </Dialog>
-    </>
+function ProviderForm(props: { provider: Provider }) {
+  // TODO
+  const form = createForm(() => ({
+    defaultValues: props.provider,
+    validators: {
+      onSubmit: ProviderSchema,
+    },
+    onSubmit: async () => {},
+  }));
+
+  return (
+    <form
+      onSubmit={async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        await form.handleSubmit();
+      }}
+    >
+      <form.Field
+        name="name"
+        children={(field) => (
+          <>
+            <label class="text-center" for={field().name}>
+              名称
+            </label>
+            <input
+              class="input"
+              name={field().name}
+              value={field().state.value}
+              onBlur={field().handleBlur}
+              onInput={(e) => field().handleChange(e.target.value)}
+            />
+            <FieldInfo field={field()} />
+          </>
+        )}
+      />
+    </form>
   );
 }
 

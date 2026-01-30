@@ -71,6 +71,9 @@ export function useProviderMutation() {
           ),
         ),
       ),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["providers"] }),
+    onSuccess: async (id) => {
+      await queryClient.invalidateQueries({ queryKey: ["providers"] });
+      await queryClient.invalidateQueries({ queryKey: ["provider", id] });
+    },
   }));
 }

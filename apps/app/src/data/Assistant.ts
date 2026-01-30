@@ -54,6 +54,9 @@ export function useAssistantMutation() {
           ),
         ),
       ),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["assistants"] }),
+    onSuccess: async (id) => {
+      await queryClient.invalidateQueries({ queryKey: ["assistants"] });
+      await queryClient.invalidateQueries({ queryKey: ["assistant", id] });
+    },
   }));
 }

@@ -1,4 +1,5 @@
 import { Dialog } from "#components/Dialog.tsx";
+import { FieldInfo } from "#components/FieldInfo.tsx";
 import {
   ProviderIcons,
   ProviderSchema,
@@ -9,9 +10,9 @@ import {
   type ProviderType,
 } from "#data/Provider.ts";
 import { emptyStringAsNull } from "#util/index.ts";
-import { createForm, type AnyFieldApi } from "@tanstack/solid-form";
+import { createForm } from "@tanstack/solid-form";
 import { createFileRoute, Link } from "@tanstack/solid-router";
-import { createSignal, For, Show } from "solid-js";
+import { createSignal, For } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import { uuidv7 } from "uuidv7";
 import LucidePlus from "~icons/lucide/plus";
@@ -24,18 +25,18 @@ export const Route = createFileRoute("/settings/providers/")({
 });
 
 function ProvidersPage() {
-  const providers = useProvidersQuery();
+  const providersQuery = useProvidersQuery();
   const [dialog, setDialog] = createSignal(false);
 
   return (
-    <div>
-      <button class="btn-primary" onClick={() => setDialog(true)}>
+    <div class="flex flex-col gap-4">
+      <button class="btn-primary w-1/2 self-center" onClick={() => setDialog(true)}>
         <LucidePlus />
         <span>添加供应商</span>
       </button>
 
-      <div class="grid grid-cols-1 gap-4 overflow-y-scroll sm:grid-cols-3">
-        <For each={providers.data}>
+      <div class="grid grid-cols-1 gap-4 overflow-y-scroll sm:grid-cols-2 lg:grid-cols-3">
+        <For each={providersQuery.data}>
           {({ id, name, type }) => (
             <Link
               to="/settings/providers/provider"
@@ -50,13 +51,13 @@ function ProvidersPage() {
       </div>
 
       <Dialog open={dialog()} onClose={() => setDialog(false)}>
-        <MyForm onComplete={() => setDialog(false)} />
+        <ProviderForm onComplete={() => setDialog(false)} />
       </Dialog>
     </div>
   );
 }
 
-function MyForm(props: { onComplete(): void }) {
+function ProviderForm(props: { onComplete(): void }) {
   const mutation = useProviderMutation();
 
   const form = createForm(() => ({
@@ -172,15 +173,5 @@ function MyForm(props: { onComplete(): void }) {
         确定
       </button>
     </form>
-  );
-}
-
-function FieldInfo(props: { field: AnyFieldApi }) {
-  return (
-    <Show when={!props.field.state.meta.isValid}>
-      <p class="text-error footnote col-span-2 text-center">
-        {props.field.state.meta.errors.map((error) => error?.message)}
-      </p>
-    </Show>
   );
 }

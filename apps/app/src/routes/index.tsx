@@ -1,5 +1,8 @@
+import { generateMessage } from "#ai/index.ts";
 import { useAssistantMutation, useAssistantQuery, useAssistantsQuery } from "#data/Assistant.ts";
 import { ZeroUUID } from "#data/index.ts";
+import type { Message } from "#data/Message.ts";
+import { useTopicMutation, useTopicQuery } from "#data/Topic.ts";
 import { clamp } from "#util/index.ts";
 import { createFileRoute, Link } from "@tanstack/solid-router";
 import { createSignal, For, Show, type Accessor, type Setter } from "solid-js";
@@ -78,7 +81,7 @@ function AssistantList(props: { setSidebar: Setter<boolean> }) {
             <Link
               class="link-active btn-ghost py-6 text-center"
               to="/"
-              search={{ assistant: assistant.id, topic: undefined }}
+              search={{ assistant: assistant.id }}
               onClick={() => props.setSidebar(false)}
             >
               {assistant.name}
@@ -92,8 +95,7 @@ function AssistantList(props: { setSidebar: Setter<boolean> }) {
 
 function ChatAreaHeader(props: { setSidebar: Setter<boolean> }) {
   const search = Route.useSearch();
-
-  const assistant = useAssistantQuery(() => search().assistant);
+  const assistantQuery = useAssistantQuery(() => search().assistant);
 
   return (
     <div class="flex size-full flex-row items-center px-1 sm:px-2">
@@ -105,16 +107,17 @@ function ChatAreaHeader(props: { setSidebar: Setter<boolean> }) {
       </button>
 
       <div class="center-child grow flex-col">
-        <Show when={assistant.isSuccess && assistant.data}>
+        <Show when={assistantQuery.data}>
           {(assistant) => <p class="headline">{assistant().name}</p>}
         </Show>
       </div>
 
       <Show when={search().topic}>
-        <Link class="btn-ghost" to="/" search={{ assistant: search().assistant, topic: undefined }}>
+        <Link class="btn-ghost" to="/" search={{ assistant: search().assistant }}>
           <LucideMessageCirclePlus />
         </Link>
       </Show>
+
       <Link to="/assistant" search={{ id: search().assistant }} class="btn-ghost">
         <LucideEllipsis />
       </Link>
@@ -123,16 +126,82 @@ function ChatAreaHeader(props: { setSidebar: Setter<boolean> }) {
 }
 
 function ChatArea() {
+  const search = Route.useSearch();
+  const navigate = Route.useNavigate();
+  const topicQuery = useTopicQuery(() => search().topic);
+  const mutation = useTopicMutation();
+
   const [height, setHeight] = createSignal(160);
+
+  let textarea: HTMLTextAreaElement;
 
   return (
     <div class="grid size-full" style={{ "grid-template-rows": `1fr 0.5rem ${height()}px` }}>
-      <div></div>
+      <ul class="flex flex-col">
+        <Show when={topicQuery.data}>
+          {(topic) => (
+            <For each={topic().messages}>
+              {({ role, content }) => (
+                <p
+                  classList={{
+                    "self-start": role === "assistant",
+                    "self-end": role === "user",
+                  }}
+                >
+                  {content}
+                </p>
+              )}
+            </For>
+          )}
+        </Show>
+      </ul>
 
       <Splitter target={[height, setHeight]} min={128} max={512} />
 
-      <form class="bg-card flex flex-col gap-2 p-2" onSubmit={(e) => e.preventDefault()}>
-        <textarea class="grow resize-none p-2 outline-0" placeholder="输入消息内容" />
+      <form
+        class="bg-card flex flex-col gap-2 p-2"
+        onSubmit={async (e) => {
+          e.preventDefault();
+
+          const message: Message = {
+            role: "user",
+            content: textarea.value,
+          };
+
+          let messages: Message[];
+
+          if (search().topic) {
+            if (topicQuery.data) {
+              messages = [...topicQuery.data.messages, message];
+              mutation.mutate({ ...topicQuery.data, messages });
+            } else return;
+          } else {
+            const id = uuidv7();
+
+            messages = [message];
+
+            mutation.mutate({
+              id,
+              name: "未命名话题",
+              assistantId: search().assistant,
+              messages,
+            });
+
+            await navigate({ to: "/", search: { assistant: search().assistant, topic: id } });
+          }
+
+          textarea.value = "";
+
+          const result = await generateMessage(search().assistant, messages);
+          messages.push({ role: "assistant", content: result });
+          mutation.mutate({ ...topicQuery.data!, messages });
+        }}
+      >
+        <textarea
+          class="grow resize-none p-2 outline-0"
+          placeholder="输入消息内容"
+          ref={(e) => (textarea = e)}
+        />
         <button class="btn-primary self-end px-3 py-1.5" type="submit">
           <LucideSend />
           <span>发送</span>
